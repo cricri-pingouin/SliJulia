@@ -8,4 +8,5 @@ Replaces [SliFractal](https://github.com/cricri-pingouin/SliFractal).
 - Now can render either a Julia or Mandelbrot set.
 
 <ins>Will I do an asm version?</ins>
+
 NO! Last time it took me way too long and it just wasn't worth the effort. If you want to check it out, check [SliFractalAsm](https://github.com/cricri-pingouin/SliFractalAsm), but be aware that I won't be updating this anymore, and it doesn't include some of the fixes/updates from this newer repository.
