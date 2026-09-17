@@ -9,4 +9,4 @@ Replaces [SliFractal](https://github.com/cricri-pingouin/SliFractal).
 
 <ins>Will I do an asm version?</ins>
 
-NO! Last time it took me way too long and it just wasn't worth the effort. If you want to check it out, check [SliFractalAsm](https://github.com/cricri-pingouin/SliFractalAsm), but be aware that I won't be updating this anymore, and it doesn't include some of the fixes/updates from this newer repository.
+If you check the Unit1.pas code, you'll find a section ins asm that has been commented out. I did start working on it and just lost interest before I got it working properly. Last time it took me way too long and it just wasn't worth the effort. If you want to check this previous effort, check [SliFractalAsm](https://github.com/cricri-pingouin/SliFractalAsm), but be aware that it won't be updated anymore, and it doesn't include some of the fixes/updates from this newer repository.
