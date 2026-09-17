@@ -1,7 +1,5 @@
 unit Unit1;
 
-{$X+}
-
 interface
 
 uses
@@ -41,9 +39,7 @@ implementation
 uses
   Unit2, pngimage;
 
-{$R *.dfm}
-
-function GetPigmentBetween(P1, P2, Percent: Double): Integer;
+{$R *.dfm}function GetPigmentBetween(P1, P2, Percent: Double): Integer;
   {Returns a number that is Percent of the way between P1 and P2}
 begin
   {Find the number between P1 and P2}
@@ -82,14 +78,14 @@ end;
 procedure TForm1.DrawFractal(dX, dY, MinX, MinY: Single; SizeX, SizeY, MaxCount: Integer);
 var
   c1, c2, z1, z2, tmp: Double;
+  //Ci, Cr, Four: Double;    //FOR ASM
   i, j, Count: Integer;
-  //Rendering
+  //Scanline stuff
   PicBuffer: TBitmap; //buffer
   BufferArray: array of array of Byte; // Multi-dimension array
   P: PRGBTriple; //Scanline pointer
   Palette: array[0..255] of TRGBTriple; //24bits RGB palettes
 //FOR ASM
-//  Ci, Cr, Four: Double;
 //label
 //  _start, _end, _realend;
 begin
@@ -125,7 +121,7 @@ begin
   end
   else
   begin
-    //Use custom palette
+    //User custom palette
     for i := 0 to MaxIterations div 2 - 1 do
     begin
       Palette[i] := GetGradientColor2(GetRValue(Colour1), GetGValue(Colour1), GetBValue(Colour1), GetRValue(Colour2), GetGValue(Colour2), GetBValue(Colour2), i / MaxIterations)

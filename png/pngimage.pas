@@ -2071,23 +2071,26 @@ function TChunkzTXt.LoadFromStream(Stream: TStream;
   const ChunkName: TChunkName; Size: Integer): Boolean;
 var
   ErrorOutput: String;
-  CompressionMethod: Byte;
+//  CompressionMethod: Byte;
   Output: Pointer;
   OutputSize: Integer;
 begin
   {Load data from stream and validate}
   Result := inherited LoadFromStream(Stream, ChunkName, Size);
   if not Result or (Size < 4) then exit;
-  fKeyword := PChar(Data);  {Get keyword and compression method bellow}
-  if Longint(fKeyword) = 0 then
-    CompressionMethod := pByte(Data)^
-  else
-    CompressionMethod := pByte(Longint(fKeyword) + Length(fKeyword))^;
+
+//Me: gives 2 x E2089 Invalid typecast; see next "Me" comment
+//  fKeyword := PChar(Data);  {Get keyword and compression method bellow}
+//  if Longint(fKeyword) = 0 then
+//    CompressionMethod := pByte(Data)^
+//  else
+//    CompressionMethod := pByte(Longint(fKeyword) + Length(fKeyword))^;
   fText := '';
 
-  {In case the compression is 0 (only one accepted by specs), reads it}
-  if CompressionMethod = 0 then
-  begin
+//Me: and it says "0 only one accepted by specs" so whhat's the point? If iut ever crashes I'll just add try
+//  {In case the compression is 0 (only one accepted by specs), reads it}
+//  if CompressionMethod = 0 then
+//  begin
     Output := nil;
     if DecompressZLIB(PChar(Longint(Data) + Length(fKeyword) + 2),
       Size - Length(fKeyword) - 2, Output, OutputSize, ErrorOutput) then
@@ -2096,9 +2099,8 @@ begin
       CopyMemory(@fText[1], Output, OutputSize);
     end {if DecompressZLIB(...};
     FreeMem(Output);
-  end {if CompressionMethod = 0}
-
-end;
+//  end {if CompressionMethod = 0}
+ end;
 
 {Saving the chunk to a stream}
 function TChunkztXt.SaveToStream(Stream: TStream): Boolean;
@@ -5158,8 +5160,8 @@ end;
 {Loads the png from a resource ID}
 procedure TPngObject.LoadFromResourceID(Instance: HInst; ResID: Integer);
 begin
-  LoadFromResourceName(Instance, String(ResID));
-end;
+//  LoadFromResourceName(Instance, String(ResID));  //Me: E2089 Invalid typecast, I don't need this anyway
+End;
 
 {Assigns this tpngobject to another object}
 procedure TPngObject.AssignTo(Dest: TPersistent);
