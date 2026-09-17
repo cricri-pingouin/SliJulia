@@ -41,7 +41,9 @@ implementation
 uses
   Unit2, pngimage;
 
-{$R *.dfm}function GetPigmentBetween(P1, P2, Percent: Double): Integer;
+{$R *.dfm}
+
+function GetPigmentBetween(P1, P2, Percent: Double): Integer;
   {Returns a number that is Percent of the way between P1 and P2}
 begin
   {Find the number between P1 and P2}
@@ -80,18 +82,17 @@ end;
 procedure TForm1.DrawFractal(dX, dY, MinX, MinY: Single; SizeX, SizeY, MaxCount: Integer);
 var
   c1, c2, z1, z2, tmp: Double;
-  //Ci, Cr, Four: Double;    //FOR ASM
   i, j, Count: Integer;
-  //Scanline stuff
+  //Rendering
   PicBuffer: TBitmap; //buffer
   BufferArray: array of array of Byte; // Multi-dimension array
   P: PRGBTriple; //Scanline pointer
   Palette: array[0..255] of TRGBTriple; //24bits RGB palettes
 //FOR ASM
+//  Ci, Cr, Four: Double;
 //label
 //  _start, _end, _realend;
 begin
-//Count will always be from 1<= count <= MaxIterations
   //Initialise palette, otherwise unpredictable colours from whatever already in memory
   for i := 0 to 255 do
   begin
@@ -102,6 +103,7 @@ begin
   //Set colour palette
   if UseFire then
   begin
+    //Fire palette
     for i := 1 to (MaxIterations div 3) do
     begin
       Palette[i].rgbtRed := (i * 255) div (MaxIterations div 3);
@@ -123,6 +125,7 @@ begin
   end
   else
   begin
+    //Use custom palette
     for i := 0 to MaxIterations div 2 - 1 do
     begin
       Palette[i] := GetGradientColor2(GetRValue(Colour1), GetGValue(Colour1), GetBValue(Colour1), GetRValue(Colour2), GetGValue(Colour2), GetBValue(Colour2), i / MaxIterations)
@@ -132,14 +135,14 @@ begin
       Palette[i] := GetGradientColor2(GetRValue(Colour2), GetGValue(Colour2), GetBValue(Colour2), GetRValue(Colour3), GetGValue(Colour3), GetBValue(Colour3), i / MaxIterations)
     end;
   end;
-  //Size the buffer array according to previous variables, i.e. form size
+  //Size the buffer array according to image size
   SetLength(BufferArray, SizeX, SizeY);
   //Initialise buffer
   PicBuffer := TBitmap.Create;
   PicBuffer.Width := SizeX;
   PicBuffer.Height := SizeY;
   PicBuffer.PixelFormat := pf24bit; //Use 24bits RGB, not TColor as we won't use alpha blending
-  //Calculate Mandelbrot set
+  //Calculate set
   c2 := MinY;
   for i := 0 to SizeY - 1 do
   begin
@@ -305,7 +308,7 @@ begin
   //Size window
   ClientWidth := CanvasWidth;
   ClientHeight := CanvasHeight;
-  //Size image, it seems to fail if doing it in Julia drawing routine if size > ca. 800 pixels
+  //Size image
   Image1.Width := CanvasWidth;
   Image1.Height := CanvasHeight;
   //Calculate steps size to make one pixel
